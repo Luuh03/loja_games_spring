@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.lojagames.model.Produto;
+import com.example.lojagames.repository.CategoriaRepository;
 import com.example.lojagames.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
@@ -29,6 +31,9 @@ public class ProdutoController {
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Produto>> getAll() {
@@ -49,7 +54,11 @@ public class ProdutoController {
 	
 	@PostMapping
 	public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto) {
-		return ResponseEntity.ok(produtoRepository.save(produto));
+		
+		if(categoriaRepository.existsById(produto.getCategoria().getId()))
+			return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+		
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A categoria não existe!", null);
 	}
 	
 	@PutMapping
@@ -60,7 +69,11 @@ public class ProdutoController {
 		}
 		
 		if(produtoRepository.existsById(produto.getId())) {
-			return ResponseEntity.ok(produtoRepository.save(produto));
+			
+			if(categoriaRepository.existsById(produto.getCategoria().getId()))
+				return ResponseEntity.ok(produtoRepository.save(produto));
+			
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A categoria não existe!", null);
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -68,6 +81,7 @@ public class ProdutoController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 
 		Optional<Produto> produto = produtoRepository.findById(id);
