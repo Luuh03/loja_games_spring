@@ -49,7 +49,7 @@ public class CategoriaController {
 	@PostMapping
 	public ResponseEntity<Categoria> post(@RequestBody Categoria categoria) {
 		
-		return ResponseEntity.ok(categoriaRepository.save(categoria));
+		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
 	}
 	
 	@PutMapping
