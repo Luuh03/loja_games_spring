@@ -53,13 +53,13 @@ public class ProdutoController {
 		return ResponseEntity.ok( produtoRepository.findAllByNomeContainingIgnoreCase(nome));
 	}
 	
-	@GetMapping("/valorMaior/{preco}")
-	public ResponseEntity<List<Produto>> getByValorMaior(@PathVariable BigDecimal preco) {
+	@GetMapping("/precoGreater/{preco}")
+	public ResponseEntity<List<Produto>> getByPrecoGreater(@PathVariable BigDecimal preco) {
 		return ResponseEntity.ok( produtoRepository.findAllByPrecoGreaterThan(preco));
 	}
 	
-	@GetMapping("/valorMenor/{preco}")
-	public ResponseEntity<List<Produto>> getByValorMenor(@PathVariable BigDecimal preco) {
+	@GetMapping("/precoLess/{preco}")
+	public ResponseEntity<List<Produto>> getByPrecoLess(@PathVariable BigDecimal preco) {
 		return ResponseEntity.ok( produtoRepository.findAllByPrecoLessThan(preco));
 	}
 	
@@ -75,9 +75,8 @@ public class ProdutoController {
 	@PutMapping
 	public ResponseEntity<Produto> put(@Valid @RequestBody Produto produto) {
 
-		if(produto.getId() == null) {
+		if(produto.getId() == null) 
 			return ResponseEntity.badRequest().build();
-		}
 		
 		if(produtoRepository.existsById(produto.getId())) {
 			
