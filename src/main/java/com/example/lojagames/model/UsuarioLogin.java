@@ -1,5 +1,7 @@
 package com.example.lojagames.model;
 
+import java.time.LocalDate;
+
 public class UsuarioLogin {
 	
 	private Long id;
@@ -7,6 +9,8 @@ public class UsuarioLogin {
 	private String usuario;
 	private String senha;
 	private String foto;
+	private LocalDate dataNascimento;
+
 	private String token;
 
 	public Long getId() {
@@ -47,6 +51,14 @@ public class UsuarioLogin {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+	
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	public String getToken() {

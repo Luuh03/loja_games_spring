@@ -41,7 +41,6 @@ public class Usuario {
 	private String foto;
 
 	@Basic
-	@NotBlank(message = "O Atributo Data de Nascimento é Obrigatório!")
 	private LocalDate dataNascimento;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
